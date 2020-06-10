@@ -1,5 +1,7 @@
 import pygame
 
+pygame.font.init()
+
 WIN_WIDTH = 600
 WIN_HEIGHT = 500
 
@@ -14,14 +16,17 @@ class Snake:
         self.vel = 0
 
 
-def draw_window(snake, win):
-    win.blit(TEXT_SCORE, (20, 20))
+def draw_window(win):
+    text = STAT_FONT.render("SCORE: ", 1, (255, 255, 255))
+    win.blit(text, (10, 20))
+    pygame.display.update()
 
 
 def main():
     loop = True
     while loop:
         window = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
+        draw_window(window)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 loop = False
