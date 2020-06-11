@@ -16,11 +16,10 @@ class Snake:
         self.y = y
         self.vel_hor = vel_hor
         self.vel_ver = vel_ver
-        self.lead_rect = pygame.Rect((x, y, 15, 15))
+        self.lead_rect = pygame.Rect((self.x, self.y, 15, 15))
 
-    def draw_snake(self, x, y, win):
-        self.x = x
-        self.y = y
+    def draw_snake(self, win):
+        self.lead_rect = pygame.Rect((self.x, self.y, 15, 15))
         pygame.draw.rect(win, (36, 252, 3), self.lead_rect)
 
     def moved_out(self):
@@ -33,30 +32,31 @@ class Snake:
         if self.y > WIN_HEIGHT:
             self.y = 0
 
-    def get_mask(self):
-        return pygame.mask.from_surface(self.lead_rect)
-
 
 class Apple:
     def __init__(self):
         self.x = random.randrange(0, WIN_WIDTH-15)
         self.y = random.randrange(60, WIN_HEIGHT-15)
+        self.apple_rect = pygame.Rect((self.x, self.y, 15, 15))
 
     def draw_apple(self, win):
-        apple_rect = pygame.Rect((self.x, self.y, 15, 15))
-        pygame.draw.rect(win, (235, 64, 52), apple_rect)
+        self.apple_rect = pygame.Rect((self.x, self.y, 15, 15))
+        pygame.draw.rect(win, (235, 64, 52), self.apple_rect)
 
-    def collide(self):
-        pass
+    def collide(self, snake):
+        return self.apple_rect.colliderect(snake.lead_rect)
 
 
 def draw_window(snake, win, apples):
     text = STAT_FONT.render("SCORE: ", 1, (255, 255, 255))
     win.blit(text, (10, 20))
-    snake.draw_snake(snake.x, snake.y, win)
+    snake.draw_snake(win)
 
     for apple in apples:
         apple.draw_apple(win)
+        if apple.collide(snake):
+            apple.x = random.randrange(0, WIN_WIDTH - 15)
+            apple.y = random.randrange(60, WIN_HEIGHT - 15)
 
     pygame.display.update()
 
