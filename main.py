@@ -1,4 +1,5 @@
 import pygame
+import random
 
 pygame.font.init()
 
@@ -33,10 +34,23 @@ class Snake:
             self.y = 0
 
 
-def draw_window(snake, win):
+class Apple:
+    def __init__(self):
+        self.x = random.randrange(0, WIN_WIDTH-15)
+        self.y = random.randrange(60, WIN_HEIGHT-15)
+
+    def draw_apple(self, win):
+        apple_rect = pygame.Rect((self.x, self.y, 15, 15))
+        pygame.draw.rect(win, (235, 64, 52), apple_rect)
+
+
+def draw_window(snake, win, apples):
     text = STAT_FONT.render("SCORE: ", 1, (255, 255, 255))
     win.blit(text, (10, 20))
     snake.draw_snake(snake.x, snake.y, win)
+
+    for apple in apples:
+        apple.draw_apple(win)
 
     pygame.display.update()
 
@@ -45,10 +59,15 @@ def main():
     loop = True
     snake = Snake(300, 300, 0, 0)
     clock = pygame.time.Clock()
+    apples = []
+
+    for i in range(4):
+        apple = Apple()
+        apples.append(apple)
 
     while loop:
         window = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
-        draw_window(snake, window)
+        draw_window(snake, window, apples)
         clock.tick(5)
 
         for event in pygame.event.get():
