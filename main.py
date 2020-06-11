@@ -22,6 +22,16 @@ class Snake:
         lead_rect = pygame.Rect((x, y, 15, 15))
         pygame.draw.rect(win, (36, 252, 3), lead_rect)
 
+    def moved_out(self):
+        if self.x < 0:
+            self.x = WIN_WIDTH
+        if self.x > WIN_WIDTH:
+            self.x = 0
+        if self.y < 0:
+            self.y = WIN_HEIGHT
+        if self.y > WIN_HEIGHT:
+            self.y = 0
+
 
 def draw_window(snake, win):
     text = STAT_FONT.render("SCORE: ", 1, (255, 255, 255))
@@ -61,6 +71,7 @@ def main():
 
         snake.x += snake.vel_hor
         snake.y += snake.vel_ver
+        snake.moved_out()
 
 
 if __name__ == '__main__':
