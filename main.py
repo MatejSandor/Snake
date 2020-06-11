@@ -16,12 +16,12 @@ class Snake:
         self.y = y
         self.vel_hor = vel_hor
         self.vel_ver = vel_ver
+        self.lead_rect = pygame.Rect((x, y, 15, 15))
 
     def draw_snake(self, x, y, win):
         self.x = x
         self.y = y
-        lead_rect = pygame.Rect((x, y, 15, 15))
-        pygame.draw.rect(win, (36, 252, 3), lead_rect)
+        pygame.draw.rect(win, (36, 252, 3), self.lead_rect)
 
     def moved_out(self):
         if self.x < 0:
@@ -33,6 +33,9 @@ class Snake:
         if self.y > WIN_HEIGHT:
             self.y = 0
 
+    def get_mask(self):
+        return pygame.mask.from_surface(self.lead_rect)
+
 
 class Apple:
     def __init__(self):
@@ -42,6 +45,9 @@ class Apple:
     def draw_apple(self, win):
         apple_rect = pygame.Rect((self.x, self.y, 15, 15))
         pygame.draw.rect(win, (235, 64, 52), apple_rect)
+
+    def collide(self):
+        pass
 
 
 def draw_window(snake, win, apples):
